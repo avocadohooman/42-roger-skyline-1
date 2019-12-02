@@ -1,0 +1,199 @@
+1. Created 4.2 GB partition during installation process\
+2. Installed ssh service via \
+	sudo apt-get update\
+	sudo apt install openssl-server\
+3. Updated services\
+	sudo apt upgrade\
+	sudo apt update\
+4. Created new user gmolin and added him to sudoers \
+	adduser gmolin\
+	sudo usermod -aG sudo gmolin\
+5. Generated SSH key for gmolin\
+	(in iMac terminal):
+		ssh-keygen -t rsa
+		ssh-copy-id -i /Users/gmolin/.ssh/id_rsa.pub @ 10.12.181.66
+6. Then we change the static IP and using a \30 netmask* by 
+	1) removing dhcp from /etc/network/interfaces
+		cat /etc/network/interfaces
+		remove dhcp in primary network interfaces
+	2) Changing # The loopback network interfaces to:
+		auto loc
+		iface lo inet loopback
+	3) Changing # The primary network interface
+		allow-hotplug enp0s3
+		iface enp0s3 inet static
+				addres 10.12.166.177
+				netmask 255.255.255.252
+				gatway 10.12.254.254
+	
+	*What is a /30 bit subnet mask?
+	I am sure you are used to seeing subnet masks that look like 255.255.255.0. This is a /24 subnet mask in “slash notation”. 
+	As you can see, it is much easier to type /24 than it is to type 255.255.255.0. 
+	These two are the same because if you translate 255.255.255.0 to binary, 
+	you get 11111111 11111111 11111111 00000000, or 24 one’s.
+	
+	As you know a /24 bit subnet mask has 254 usable IP addresses + 1 for the broadcast + 1 for the network. 
+	This is calculated 2^8 (or 2 to the 8th power) = 256 – 2 = 254.
+
+	So what is a /30 bit mask? A /30 bit mask would be 30 one’s, leaving just 2 zero’s that could be used for host addressing. 
+	If you apply the hosts formula, you get 2^2 = 4 – 2 = 2 useable IP addresses. 
+7. In order to change the default port, I need to configure the sshd_config file located
+	int /etc/ssh/sshd_config. 
+	Locate "#Port .." remove "#" and change the number to you liking (in my case 50683)*
+	restart ssh: service ssh restart
+
+	*Note: The Internet Assigned Numbers Authority (IANA) is responsible for the global coordination of the DNS Root, IP addressing, 
+	and other Internet protocol resources. It is good practice to follow their port assignment guidelines. Having said that, 
+	port numbers are divided into three ranges: Well Known Ports, Registered Ports, and Dynamic and/or Private Ports. The Well Known 
+	Ports are those from 0 through 1023 and SHOULD NOT be used. Registered Ports are those from 1024 through 49151 should also be 
+	avoided too. Dynamic and/or Private Ports are those from 49152 through 65535 and can be used. Though nothing is stopping you from 
+	using reserved port numbers, our suggestion may help avoid technical issues with port allocation in the future.
+
+	You can now connect with ssh gmolin@10.12.166.177 -p 50683
+8. Install UFW (Uncomplicated Firewall)
+	1) update you system with
+		sudo apt-get update && sudo apt-get upgrade
+	2) Install UFW
+		sudo apt-get install ufw
+	3) Activate UFW
+		(sudo ufw status)
+		sudo ufw enable
+9. Setup firewall for services used outside VM (SSH, HTTP, HTTPS)
+	SSH port: 50683/tcp
+	HTTP port: 80/tcp	
+	HTTPS port: 443/tcp
+	
+	sudo ufw allow 50683/tcp
+	sudo ufw allow 80/tcp
+	sudo ufw allow 443/tcp
+
+	restart deamon service:
+	ssh service sshd restart
+10. Protect webserver from  DOS attacks
+	1) Install Fail2Ban
+		sudo apt-get intsall fail2ban
+		sudo apt-get update && sudo apt-get upgrade
+	2) Copy default default jail.conf file to make a local configuration with this command
+		sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+	3) Edit jail.local
+		Note: The default Fail2Ban configuration file is located at /etc/fail2ban/jail.conf. 
+		The configuration work should not be done in that file, since it can be modified by package upgrades, 
+		but rather copy it so that we can make our changes safely.
+
+		nano /etc/fail2ban/jail.local
+
+		add this to your file:
+		[sshd]
+		enabled = true
+		port    = 42
+		logpath = %(sshd_log)s
+		backend = %(sshd_backend)s
+		maxretry = 3
+		bantime = 600
+
+		#Add after HTTP servers:
+		[http-get-dos]
+		enabled = true
+		port = http,https
+		filter = http-get-dos
+		logpath = /var/log/apache2/access.log (le fichier d'access sur server web)
+		maxretry = 300
+		findtime = 300
+		bantime = 600
+		action = iptables[name=HTTP, port=http, protocol=tcp]
+
+	4) Add http-get-dos filter to /etc/fail2ban/filder.d/http-get-dos.conf with this input:
+		[Definition]
+		failregex = ^<HOST> -.*"(GET|POST).*
+		ignoreregex =
+
+	5) restart firewall and fail2ban
+		sudo service ufw reload	
+		sudo service fail2ban restart
+		sudo fail2ban-client status
+	11. Protection against port scans:
+		1) Install portsentry
+			apt-get install portsenty
+		2) Edit /default/portsentry file
+			nano /etc/default/portsentry
+
+			TCP_MODE="atcp"
+			UDP_MODE="audp"
+		3) Edit /etc/portsentry/portsentry.conf to block UDP and TCP
+			BLOCK_UDP="1"
+			BLOCK_TCP="1"
+		4) Uncomment the current KILL_ROUTE command and comment following:
+			KILL_ROUTE="/sbin/iptables -I INPUT -s $TARGET$ -j DROP"
+			KILL_HOSTS_DENY="ALL: $TARGET$ : DENY
+		4.1) To send a message when someone scans your port also:
+		Below the KILL_RUN_CMD comment, add this:
+			KILL_RUN_CMD=""/sbin/iptables -I INPUT -s $TARGET$ -j DROP && /sbin/iptables -I INPUT -s $TARGET$ -m limit --limit 3/minute --limit-burst 5 -j LOG --log-level debug --log-prefix 'Portsentry: dropping: '"
+		Uncomment this:
+		PORT_BANNER="** UNAUTHORIZED ACCESS PROHIBITED *** YOUR CONNECTION ATTEMPT HAS BEEN LOGGED. GO AWAY."
+		5) Restart service
+			sudo service portsentry restart
+		6) Test port scanning
+			nmap <ip>
+			cat /var/log/syslog (you can see attackalerts)
+	12. Stop service we don't need:
+		sudo systemctl disable console-setup.service
+		sudo systemctl disable keyboard-setup.service
+		sudo systemctl disable apt-daily.timer
+		sudo systemctl disable apt-daily-upgrade.timer
+		sudo systemctl disable syslog.service
+	13. Create a script that updates all the sources of package:
+		1) create update.sh in ~ folder:
+			echo "sudo apt-get update -y >> /var/log/update_script.log" >> ~/update.sh
+			echo "sudo apt-get upgrade -y >> /var/log/update_script.log" >> ~/update.sh
+		2) sudo crontab -e (for scheduling)
+			add:
+			@reboot sudo ~/update.sh (for running it at boot)
+			0 4 * * 7 sudo ~/update.sh (for running it once a week, e.g. Sunday, at 4am)
+
+			Info:
+			* * * * * command to be executed
+			- - - - -
+			| | | | |
+			| | | | ----- Day of week (0 - 7) (Sunday=0 or 7)
+			| | | ------- Month (1 - 12)
+			| | --------- Day of month (1 - 31)
+			| ----------- Hour (0 - 23)
+			------------- Minute (0 - 59)
+	
+	14. Create a monitor monitor changes of the /etc/crontab file and sends an email to
+		root if it has been modified. 
+		1)	install mailx (if not available)
+			sudo apt install mailutils
+		
+		2) create monitor.sh in root folder with following content:
+	
+		#!/bin/bash
+		FILE="/var/tmp/checksum"
+		FILE_TO_WATCH="/var/spool/cron/crontabs/root"
+		VALUE=$(sudo md5sum $FILE_TO_WATCH)
+
+		if [ ! -f $FILE ]
+		then
+			echo "$VALUE" > $FILE
+			exit 0;
+		fi;
+
+		if [ "$VALUE" != "$(cat $FILE)" ];
+			then
+			echo "$VALUE" > $FILE
+			echo "$FILE_TO_WATCH has been modified ! '*_*" | mailx -s "$FILE_TO_WATCH modified !" root
+		fi;
+
+		3) add task to crontab -e
+			@midnight ~/monitor.sh
+		
+		4) Make sure we have correct right:
+			sudo chmod 777 monitor.sh
+			sudo chmod 777 update.sh
+		5) Test if cron service is enabled
+			sudo systemctl enable cron
+
+		6) Test if Email sending works:
+			You can check mail in /var/mail/gmolin
+
+	15. 
