@@ -11,13 +11,19 @@ apt-get install sudo
 
 #Create user and add to sudo
 
-useradd -p $(openssl passwd -1 password) gmolin
-adduser gmolin sudo
+sudo adduser --disabled-password --gecos "" username
+echo "gmolin:test1234" | chpasswd
+sudo adduser gmolin sudo
+sudo usermod -aG sudo gmolin
+rm -rf /etc/sudoers 
+cp assets/user/sudoers /etc/
 
 #Remvoe DHCP and create static IP
 
-sudo rm /etc/network/interfaces
-cp assets/static/interfaces /etc/network/interfaces
+#####sudo rm /etc/network/interfaces
+cp /etc/network/interfaces /etc/network/interfaces.backup
+rm -rf /etc/network/interfaces
+cp assets/static/interfaces /etc/network/
 
 #Install SSH and configure it properly with fixed port
 
@@ -25,10 +31,10 @@ apt -y install openssh-server
 
 rm -rf /etc/ssh/sshd_config
 cp assets/sshd/sshd_config /etc/ssh/
-yes "y" | ssh-keygen -q -N "" > /dev/null
-mkdir ~/.ssh
-cat assets/ssh/id_rsa.pub > ~/.ssh/authorized_keys
 
+#yes "y" | ssh-keygen -q -N "" > /dev/null
+mkdir home/gmolin/.ssh/
+cat assets/ssh/id_rsa.pub > /home/gmolin/.ssh/authorized_keys
 
 sudo service ssh restart
 sudo service sshd restart
