@@ -98,14 +98,16 @@ sudo a2ensite default-ssl
 sudo a2enconf ssl-params
 
 #Set up Firewall; Default DROP connections
-ufw enable
-ufw default deny incoming
-ufw default allow outgoing
-ufw allow 50683
-ufw allow 443
-ufw allow 80
-ufw reload
-ssh service sshd restart
+sudo apt-get update && sudo apt-get upgrade
+yes "y" | sudo apt-get install ufw
+sudo ufw enable
+sudo ufw allow 50683/tcp
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw reload
+sudo ssh service sshd restart
 
 #Reboot Apache server, hopefully we have a live website
 systemctl reload apache2
