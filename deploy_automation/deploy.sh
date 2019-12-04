@@ -61,11 +61,16 @@ sudo systemctl disable syslog.service
 yes "y" | sudo apt -y install mailx
 yes "y" | sudo apt install mailutils
 
-cp -r assets/scripts ~/
-{ crontab -e; echo '0 4 * * 7 sudo ~/update.sh'; } | crontab -e 
-{ crontab -e; echo '@reboot sudo ~/update.sh'; } | crontab -e 
+#cp -r assets/scripts ~/
+##{ crontab -e; echo '0 4 * * 7 sudo ~/update.sh'; } | crontab -e 
+##{ crontab -e; echo '@reboot sudo ~/update.sh'; } | crontab -e 
 
-{ crontab -e; echo '@midnight sudo ~/monitor.sh'; } | crontab -e 
+##{ crontab -e; echo '@midnight sudo ~/monitor.sh'; } | crontab -e 
+
+{ crontab -l -u gmolin; echo '0 4 * * SUN sudo ~/update.sh'; } | crontab -u gmolin -
+{ crontab -l -u gmolin; echo '@reboot sudo ~/update.sh'; } | crontab -u gmolin -
+
+{ crontab -l -u gmolin; echo '0 0 * * * SUN ~/monitor.sh'; } | crontab -u gmolin -
 
 #Install Apache
 
