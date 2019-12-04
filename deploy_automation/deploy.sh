@@ -11,12 +11,12 @@ apt-get install sudo
 
 #Create user and add to sudo
 
-sudo adduser --disabled-password --gecos "" username
+sudo adduser --disabled-password --gecos "" gmolin
 echo "gmolin:test1234" | chpasswd
 sudo adduser gmolin sudo
 sudo usermod -aG sudo gmolin
-rm -rf /etc/sudoers 
-cp assets/user/sudoers /etc/
+#rm -rf /etc/sudoers 
+#cp assets/user/sudoers /etc/
 
 #Remvoe DHCP and create static IP
 
@@ -73,10 +73,10 @@ cp -r assets/scripts/ ~/
 
 ##{ crontab -e; echo '@midnight sudo ~/monitor.sh'; } | crontab -e 
 
-{ crontab -l -u gmolin; echo '0 4 * * SUN sudo ~/update.sh'; } | crontab -u gmolin -
-{ crontab -l -u gmolin; echo '@reboot sudo ~/update.sh'; } | crontab -u gmolin -
+{ crontab -l -u gmolin; echo '0 4 * * SUN sudo ~/scripts/update.sh'; } | crontab -u gmolin -
+{ crontab -l -u gmolin; echo '@reboot sudo ~/scripts/update.sh'; } | crontab -u gmolin -
 
-{ crontab -l -u gmolin; echo '0 0 * * * SUN ~/monitor.sh'; } | crontab -u gmolin -
+{ crontab -l -u gmolin; echo '0 0 * * * SUN ~/scripts/monitor.sh'; } | crontab -u gmolin -
 
 #Install Apache
 
