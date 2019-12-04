@@ -2,8 +2,12 @@
 
 DEBIAN_FRONTEND=noninteractive
 
+#Install Sudo
+
 apt -y update
 apt -y upgrade
+
+apt-get install sudo
 
 #Create user and add to sudo
 
@@ -25,10 +29,14 @@ yes "y" | ssh-keygen -q -N "" > /dev/null
 mkdir ~/.ssh
 cat assets/ssh/id_rsa.pub > ~/.ssh/authorized_keys
 
-service sshd restart
+
+sudo service ssh restart
+sudo service sshd restart
+sudo service restart networking
+sudo ifup enp0s3
 
 #Install and configure Fail2Ban
-apt -y install fail2ban
+yes "y" | apt -y install fail2ban
 
 rm -rf /etc/fail2ban/jail.local
 cp assets/fail2ban/jail.local /etc/fail2ban/
@@ -38,10 +46,20 @@ cp assets/fail2ban/portscan.conf /etc/fail2ban/filter.d
 
 service fail2ban restart
 
+#Stop services we don't need
+sudo systemctl disable console-setup.service
+sudo systemctl disable keyboard-setup.service
+sudo systemctl disable apt-daily.timer
+sudo systemctl disable apt-daily-upgrade.timer
+sudo systemctl disable syslog.service
+
+#Install and configure protection against ports scan
+#yes "y" | sudo 	apt-get install portsenty
+
 #Copy and set up cron scripts for updating packages and detecting crontab changes
 
-sudo apt -y install mailx
-sudo apt install mailutils
+yes "y" | sudo apt -y install mailx
+yes "y" | sudo apt install mailutils
 
 cp -r assets/scripts ~/
 { crontab -e; echo '0 4 * * 7 sudo ~/update.sh'; } | crontab -e 
@@ -51,7 +69,7 @@ cp -r assets/scripts ~/
 
 #Install Apache
 
-sudo apt install apache2 -y
+yes "y" | sudo apt install apache2 -y
 sudo systemctl enable apache2
 yes "y" | rm -rf /var/www/html/
 cp -r assets/apache/ /var/www/html/
@@ -76,6 +94,9 @@ ufw allow 50683
 ufw allow 443
 ufw allow 80
 ufw reload
+ssh service sshd restart
 
 #Reboot Apache server, hopefully we have a live website
 systemctl reload apache2
+sudo fail2ban-client status
+
