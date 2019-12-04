@@ -21,9 +21,9 @@ sudo usermod -aG sudo gmolin
 #Remvoe DHCP and create static IP
 
 #####sudo rm /etc/network/interfaces
-cp /etc/network/interfaces /etc/network/interfaces.backup
-rm -rf /etc/network/interfaces
-cp assets/static/interfaces /etc/network/
+#mv /etc/network/interfaces /etc/network/interfaces.backup
+#rm -rf /etc/network/interfaces
+cp assets/staticip/interfaces /etc/network/interfaces
 
 #Install SSH and configure it properly with fixed port
 
@@ -33,24 +33,27 @@ rm -rf /etc/ssh/sshd_config
 cp assets/sshd/sshd_config /etc/ssh/
 
 #yes "y" | ssh-keygen -q -N "" > /dev/null
-mkdir home/gmolin/.ssh/
+
+sudo mkdir /home/gmolin/.ssh/
+sudo mkdir /home/gmolin/.ssh/
+sudo mkdir /home/gmolin/.ssh/
 cat assets/ssh/id_rsa.pub > /home/gmolin/.ssh/authorized_keys
 
 sudo service ssh restart
 sudo service sshd restart
-sudo service restart networking
+sudo service networking restart
 sudo ifup enp0s3
 
 #Install and configure Fail2Ban
-yes "y" | apt -y install fail2ban
+yes "y" | sudo apt -y install fail2ban
 
-rm -rf /etc/fail2ban/jail.local
+sudo rm -rf /etc/fail2ban/jail.local
 cp assets/fail2ban/jail.local /etc/fail2ban/
 
 cp assets/fail2ban/nginx-dos.conf /etc/fail2ban/filter.d
 cp assets/fail2ban/portscan.conf /etc/fail2ban/filter.d
 
-service fail2ban restart
+sudo service fail2ban restart
 
 #Stop services we don't need
 sudo systemctl disable console-setup.service
@@ -73,10 +76,10 @@ cp -r assets/scripts/ ~/
 
 ##{ crontab -e; echo '@midnight sudo ~/monitor.sh'; } | crontab -e 
 
-{ crontab -l -u gmolin; echo '0 4 * * SUN sudo ~/scripts/update.sh'; } | crontab -u gmolin -
-{ crontab -l -u gmolin; echo '@reboot sudo ~/scripts/update.sh'; } | crontab -u gmolin -
+{ crontab -l -u root; echo '0 4 * * SUN sudo ~/scripts/update.sh'; } | crontab -u root -
+{ crontab -l -u root; echo '@reboot sudo ~/scripts/update.sh'; } | crontab -u root -
 
-{ crontab -l -u gmolin; echo '0 0 * * * SUN ~/scripts/monitor.sh'; } | crontab -u gmolin -
+{ crontab -l -u root; echo '0 0 * * * SUN ~/scripts/monitor.sh'; } | crontab -u root -
 
 #Install Apache
 
@@ -89,8 +92,11 @@ cp -r assets/apache/ /var/www/html/
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj "/C=FI/ST=HEL/O=Hive/OU=Project-roger/CN=10.12.166.177" -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
 
 cp assets/ssl/ssl-params.conf /etc/apache2/conf-available/ssl-params.conf
+sudo cp /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf.bak
 rm /etc/apache2/sites-available/default-ssl.conf
 cp assets/ssl/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
+rm /etc/apache2/sites-available/000-default.conf
+cp assets/ssl/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 sudo a2enmod ssl
 sudo a2enmod headers
