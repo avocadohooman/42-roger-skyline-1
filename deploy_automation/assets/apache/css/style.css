@@ -1,0 +1,921 @@
+/* Global Layout Set-up */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+/* General Design */
+
+p {
+  color: #739696;
+}
+
+h2 {
+  margin-top: 20px;
+  font-weight: 400;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.h2-border {
+  margin-top: 10px;
+  border-top: 3px solid #333636;
+  max-width: 10%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.4em;
+  text-align: center;
+}
+
+
+/* Transitions */
+
+.resume-img {
+  transition: transform .5s ease-out, box-shadow .5s ease-out;
+
+}
+
+
+/* Pseudo-Classes */
+
+.nav-items li:hover{
+  background: #363c44;
+}
+
+.resume-img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 3px 26px rgba(51,54,54,.4);
+}
+
+
+/* Links and Buttons */
+
+a {
+  text-decoration: none;
+  color: #4db3dd;
+}
+
+a:hover {
+  color: #ed6463;
+}
+
+/* Images Design */
+
+.profile-img {
+  background-image: url("../images/gerhard.jpg");
+  background-size: cover;
+  border-radius: 50%;
+  border: 2px solid white;
+  width: 180px;
+  height: 180px;
+}
+
+.resume-img {
+  width: 200px;
+  height: auto;
+  border: 1px solid #333636;
+  border-radius: 4%;
+  box-shadow: 0 3px 6px rgba(51,54,54,.4);
+}
+
+.project-1-image,
+.project-2-image,
+.project-3-image,
+.project-4-image,
+.project-5-image,
+.project-6-image,
+.project-7-image,
+.project-8-image,
+.project-9-image {
+  max-width: 100%;
+  box-shadow: 0 3px 6px rgba(51,54,54,.4);
+}
+/* Section Design */
+
+.margin-wrapper {
+  margin-right: 25px;
+  margin-left: 25px;
+}
+
+/** Mobile Header Navigation **/
+.main-nav {
+  background: url("../images/header_bg_mobile.png") no-repeat top center;
+  background-size: cover;
+  overflow: hidden;
+  display: inline-block;
+  width: 100%;
+  height: auto;
+  box-shadow: inset 0 0 0 1000px rgba(0,0,0,.2);
+}
+
+.profile-img {
+  margin-top: 30px;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.main-nav h1 {
+  text-align: center;
+  letter-spacing: 2px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: white;
+}
+
+.main-nav p {
+  text-align: center;
+  font-style: italic;
+  color: white;
+  font-size: 20px;
+  font-weight: 200;
+  padding-bottom: 20px;
+}
+
+.nav-items {
+  text-align: center;
+  margin-top: 20px;
+  list-style-type: none;
+  margin-bottom: 50px;
+
+}
+
+.nav-items li {
+  background: white;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  max-width: 60%;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 5px;
+}
+
+
+/** Who Am I Section **/
+
+.first-row-about {
+  max-height: 200px;
+  margin-top: 100px;
+  margin-bottom: 100px;  
+}
+
+.first-row-about .h2-border {
+  margin-bottom: 20px;
+}
+
+.first-row-about p {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+/** Transition Row 1 **/
+
+.second-row-transition {
+  background: url("../images/transition_bg.jpg") no-repeat top center;
+  box-shadow: inset 0 0 0 1000px rgba(0,0,0,.2);
+  background-size: cover;
+  width: 100%;
+  height: 300px;
+  padding-right: auto;
+  padding-left: auto;
+  */ position: relative; */
+}
+
+.h2-transition {
+  font-size: 1.4em;
+  font-weight: 500;
+  color: white;
+  padding-top: 100px;
+}
+
+.h2-border-transition {
+  margin-top: 10px;
+  border-top: 3px solid white;
+  max-width: 10%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+.second-row-transition p {
+  color: white;
+  font-style: italic;
+  font-size: 1.4em;
+  font-weight: 400;
+}
+
+/** Experience **/
+
+.resume {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.third-row-experience {
+  margin-bottom: 50px;
+}
+
+
+.content-row-subtitle {
+  margin-top: 20px;
+}
+
+.content-row-subtitle p {
+  padding-bottom: 15px;
+}
+
+/** Projects **/
+
+.fourth-row-projects h3 {
+  font-weight: 400;
+  font-size: 1.4em;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.lighter-black {
+  color: #363c44;
+  font-weight: 200;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+
+.content-row-subtitle {
+  margin-bottom: 20px;
+}
+
+
+/** Transition Row 2 **/
+
+.fifth-row-transition {
+  background: url("../images/transition_bg.jpg") no-repeat top center;
+  box-shadow: inset 0 0 0 1000px rgba(0,0,0,.2);
+  background-size: cover;
+  width: 100%;
+  height: 300px;
+  padding-top: auto;
+  padding-bottom: auto;
+  /* position: relative; */
+}
+
+.fifth-row-transition p {
+  color: white;
+  font-style: italic;
+  font-size: 1.4em;
+  font-weight: 400;
+}
+
+
+/** Core Skills **/
+
+.dark-bg {
+  background: #333636;
+}
+
+.sixth-row-core-skills h1 {
+  text-align: left;
+  padding-top: 20px;
+  padding-left: 20px;
+  color: #f8cd46;
+  font-weight: 350;
+
+}
+
+.sixth-row-core-skills p {
+  color: white;
+  font-weight: lighter;
+  font-size: 1em;
+  text-align: left;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 40px;
+}
+
+.core-skill-1,
+.core-skill-2,
+.core-skill-3,
+.core-skill-4,
+.core-skill-5,
+.core-skill-6 {
+  margin-bottom: 40px;
+}
+
+/** Contact Me **/
+
+
+.seventh-row-contact {
+  margin-bottom: 30px;
+}
+.contact-buttons {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.email-me,
+.phone-me {
+  order: 1;
+  flex-grow: 1;
+}
+
+.find-me {
+  order: 2;
+  flex-grow: 1;
+}
+
+.email-me, 
+.phone-me,
+.find-me {
+  text-align: justify;
+  max-width: 100%;
+  margin-top: 20px;
+}
+
+.email-me img, 
+.phone-me img,
+.find-me img {
+    display: block;
+    margin: 0 auto;
+    padding-bottom: 20px;
+    max-width: 100%;
+}
+
+.email-me p, 
+.phone-me p,
+.find-me p {
+  font-size: 1em;
+  color: black;
+}
+
+/** Footer **/
+
+.footer-flex{
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  margin-right: 20px;
+  margin-lefT:20px;
+  border-top: 1px solid black;
+}
+.footer-flex h3 {
+  padding-top: 20px;
+  padding-bottom: 30px;
+  text-transform: uppercase;
+}
+
+.back {
+  font-weight: bold;
+}
+
+.name-footer {
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+
+/* Project 4-Steps-To-Minium-Badass */
+
+.project-nav {
+  background-image: url("../images/4_steps_mb.png");
+  height: 250px;
+  background-size: cover;
+  background-position: 50% 40%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.project-header-container {
+  display:flex;
+  margin-left: 20px;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+
+.project-header-container p {
+  background: rgba(82,82,82,.7);
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: white;
+  font-weight: 400;
+  font-size: 0.9em;
+}
+
+.project-header-container p:hover {
+  background: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color:rgba(82,82,82,1);
+  font-weight: 400;
+  font-size: 0.9em;
+  box-shadow: 0 3px 5px rgba(51,54,54,.4);
+}
+
+.arrow-left::before {
+  content: url("../images/arrow_left_white.svg");
+  display:inline-block;
+  height:6px;
+  width:6px;
+  padding-right: 5px;
+  padding-left: 5px;
+  margin-top: 3px;
+}
+
+.arrow-left:hover::before {
+  content: url("../images/arrow_left_black.svg");
+  display:inline-block;
+  height:6px;
+  width:6px;
+  padding-right: 5px;
+  padding-left: 5px;
+  margin-top: 3px;
+}
+
+.project-description {
+  margin-bottom: 40px;
+}
+
+.project-description h1 {
+ text-transform: uppercase;
+ font-weight: 500;
+ margin-top: 50px;
+ margin-bottom: 20px;
+}
+
+.project-description h2 {
+  text-transform: none;
+  font-weight: 400;
+  margin-bottom: 50px;
+ }
+
+.project-description h1,
+.project-description h2 {
+ text-align: left;
+ margin-left: 20px;
+ margin-right: 20px;
+}
+
+.project-description img {
+  width: 100%;
+  margin-bottom: 20px;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.project-description p {
+  text-align: left;
+  color: black;
+  line-height: 1.4em;
+  font-weight: 300;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.project-description ul {
+  list-style-type: none;
+  margin-right: 30px;
+  margin-left: 30px;
+}
+
+.project-description li {
+  font-size: 1.2em;
+  padding-top: 10px;
+  font-weight: bold;
+}
+
+/* Project LUPO: The Space Adventure */
+
+.project-nav-lupo {
+  background-image: url("../images/lupo_large.jpg");
+  height: 250px;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.youtube-container{
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; 
+  height: 0;
+  margin-bottom: 30px;
+}
+.youtube-container iframe{
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.card-examples p{
+  line-height: 1.8rem;
+  margin-bottom: 30px;
+}
+
+/* Project Unserious */
+.project-nav-unserious {
+  background-image: url("../images/unserious_square.png");
+  height: 250px;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.unserious-list p {
+  font-weight: bold;
+}
+
+.unserious-list li {
+  font-weight: normal;
+}
+
+/* Project Video */
+.project-nav-video {
+  background-image: url("../images/video_production_2.png");
+  height: 250px;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.video-h2 h2 {
+  font-weight: 400;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Project LUPO EDU */
+.project-nav-lupoedu {
+  background-image: url("../images/lupo_edu.png");
+  height: 250px;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+/* Project USA */
+.project-nav-usa {
+  background-image: url("../images/usa.jpg");
+  height: 250px;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+/* Project Futurish */
+.project-nav-futurish {
+  background-image: url("../images/ftrish-promo.png");
+  height: 250px;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+/* Project How To Human */
+.project-nav-howtohuman {
+  background-image: url("../images/howtohuman1.png");
+  height: 250px;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+/* Project Book Chapter */
+.project-nav-bookchapter {
+  background-image: url("../images/book_chapter.png");
+  height: 250px;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.book-list li {
+  line-height: 1.6rem;
+}
+
+
+/* Media Queries */
+
+@media (min-width:768px) {
+
+
+/* Header */
+
+.profile-img {
+  background-image: url("../images/gerhard.jpg");
+  background-size: cover;
+  border-radius: 50%;
+  border: 2px solid white;
+  width: 180px;
+  height: 180px;
+}
+
+  .main-nav { /* This produces a parallax effect for the background image */ 
+    background-image: url("../images/header_bg_web.png");
+    background-size: 100% 65%;
+    background-repeat: no-repeat;
+    background-position: top;
+    background-attachment: fixed;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+    height: auto;
+    box-shadow: inset 0 0 0 1000px rgba(0,0,0,.2);
+  }
+
+  .header-flex-1{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-flow: row;
+    justify-content: center;
+    margin-top: 50px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .flex-header-title {
+    flex: 2;
+    align-self: center;
+    /* margin-right: 80px; */
+  }
+
+  .flex-header-image {
+    flex: 1;
+    /* margin-left: 80px; */
+  }
+
+  .main-nav h1 {
+    font-size: 3em;
+    font-weight: 500;
+  }
+
+  .main-nav p {
+    font-size: 1.6em;
+    font-weight: 400;
+  }
+
+  .nav-items {
+    display: flex;
+    flex-wrap: wrap;
+    flex-flow: row;
+    justify-content: center;
+    border-top: 3px solid white;
+    border-bottom: 1px solid white;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 600px;
+  }
+
+  .nav-items li {
+    background: none;
+  }
+
+  .nav-items a {
+    color: white;
+  }
+
+  .nav-items li:hover{
+    text-decoration: underline;
+    background: none;
+    }
+
+   /** Who Am I Section **/
+
+  .first-row-about p {
+    padding-left: 150px;
+    padding-right: 150px;
+  } 
+
+
+    /** Transition Row 1 **/
+
+
+.second-row-transition {
+  background-image: url("../images/transition_bg.jpg");
+  background-size: cover%;
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-attachment: fixed;
+  box-shadow: inset 0 0 0 1000px rgba(0,0,0,.2);
+  width: 100%;
+  height: 300px;
+  padding-right: auto;
+  padding-left: auto;
+  overflow: hidden;
+  display: inline-block;
+}
+
+/** Experience **/
+
+
+.resume img {
+  width: 300px;
+}
+
+/** Projects **/
+
+
+.project-flex-container {
+  display: flex;
+  flex-flow: row wrap;
+  max-width: 800px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.project-flex {
+  flex-basis: 45%;
+  margin-left: auto;
+  margin-right: auto;
+}
+/** Transition Row 2 **/
+
+.fifth-row-transition {
+  background-image: url("../images/transition_bg.jpg");
+  background-size: cover%;
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-attachment: fixed;
+  box-shadow: inset 0 0 0 1000px rgba(0,0,0,.2);
+  width: 100%;
+  height: 300px;
+  padding-right: auto;
+  padding-left: auto;
+  overflow: hidden;
+  display: inline-block;
+}
+
+
+
+/** Core-Skills **/
+
+.skill-flex-container {
+  display: flex;
+  flex-flow: row wrap;
+  max-width: 800px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.skill-flex {
+  flex-basis: 45%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.core-skill-1,
+.core-skill-2 {
+  margin-top: 20px;
+}
+
+.skill-flex-container p {
+  font-size: 1.1em;
+}
+
+/* Project 4-Steps-To-Minium-Badass */
+
+.project-nav {
+  height: 400px;
+}
+.project-description {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Project LUPO: The Space Adventure */
+.project-nav-lupo {
+  height: 400px;
+}
+.card-examples {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-flow: row;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 900px;
+}
+.flex-card-image-2,
+.flex-card-image-1 {
+  flex: 1;
+}
+/* Project Video */
+.project-nav-video {
+  height: 400px;
+}
+
+/* Project LUPO EDU */
+.project-nav-lupoedu {
+  height: 400px;
+}
+
+/* Project USA */
+.project-nav-usa {
+  height: 400px;
+}
+
+/* Project Futurish */
+.project-nav-futurish {
+  height: 400px;
+  background-position: 20% 20%;
+}
+
+/* Project How To Human */
+.project-nav-howtohuman {
+  height: 400px;
+}
+
+/* Project Book Chapter */
+.project-nav-bookchapter {
+  height: 400px;
+}
+}
+
+@media (min-width:1024px) {
+
+  /* Transitions */
+
+.project-flex img {
+  transition: transform .5s ease-out, box-shadow .5s ease-out;
+}
+
+.profile-img {
+  transition: transform .5s ease-out;
+}
+
+
+/* Pseudo-Classes */
+
+
+.project-flex img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 3px 26px rgba(51,54,54,.4);
+}
+
+.profile-img:hover {
+  transform: scale(1.1) rotate(360deg);
+}
+
+ /** Who Am I Section **/
+
+ .first-row-about p {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+} 
+
+
+/** Projects **/
+
+  .project-flex-container {
+    display: flex;
+    flex-flow: row wrap;
+    max-width: 1200px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  .project-flex {
+    flex-basis: 30%;
+    margin-left: auto;
+    margin-right: auto;
+  
+  }
+
+  /** Core-Skills **/
+
+  .skill-flex-container {
+    max-width: 1200px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.skill-flex-container p {
+  font-size: 1.1em;
+}
+
+}

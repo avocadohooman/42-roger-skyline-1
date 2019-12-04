@@ -53,8 +53,8 @@ cp -r assets/scripts ~/
 
 sudo apt install apache2 -y
 sudo systemctl enable apache2
-rm -rf /var/www/html/*
-cp assets/apache/index.apache-debian.html /var/www/html/
+rm -rf /var/www/html/
+cp -r assets/apache/ /var/www/html/
 
 #Generate & Setup SSL
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj "/C=FI/ST=HEL/O=Hive/OU=Project-roger/CN=10.12.166.177" -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
