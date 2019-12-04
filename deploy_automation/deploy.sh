@@ -45,9 +45,9 @@ sudo apt install mailutils
 
 cp -r assets/scripts ~/
 { crontab -e; echo '0 4 * * 7 sudo ~/update.sh'; } | crontab -e 
-{ crontab -e; echo '@reboot sudo ~/update.sh'; } | crontab -e
+{ crontab -e; echo '@reboot sudo ~/update.sh'; } | crontab -e 
 
-{ crontab -e; echo '@midnight sudo ~/monitor.sh'; } | crontab -e
+{ crontab -e; echo '@midnight sudo ~/monitor.sh'; } | crontab -e 
 
 #Install Apache
 
@@ -75,7 +75,6 @@ ufw default allow outgoing
 ufw allow 50683
 ufw allow 443
 ufw allow 80
-ufw allow 'Nginx Full'
 ufw reload
 
 #Reboot Apache server, hopefully we have a live website
