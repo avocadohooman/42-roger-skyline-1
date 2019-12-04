@@ -61,7 +61,7 @@ sudo systemctl disable syslog.service
 yes "y" | sudo apt -y install mailx
 yes "y" | sudo apt install mailutils
 
-#cp -r assets/scripts ~/
+cp -r assets/scripts/ ~/
 ##{ crontab -e; echo '0 4 * * 7 sudo ~/update.sh'; } | crontab -e 
 ##{ crontab -e; echo '@reboot sudo ~/update.sh'; } | crontab -e 
 
