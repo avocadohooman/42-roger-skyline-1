@@ -53,7 +53,7 @@ cp -r assets/scripts ~/
 
 sudo apt install apache2 -y
 sudo systemctl enable apache2
-rm -rf /var/www/html/
+yes "y" | rm -rf /var/www/html/
 cp -r assets/apache/ /var/www/html/
 
 #Generate & Setup SSL
