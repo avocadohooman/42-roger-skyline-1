@@ -196,4 +196,78 @@
 		6) Test if Email sending works:
 			You can check mail in /var/mail/gmolin
 
-	15. 
+	15. Create a self signed SSL
+		1) sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
+
+		2) Fill out the prompts appropriately. The most important line is the one that requests the Common Name (e.g. server FQDN or YOUR name). 
+		You need to enter the domain name associated with your server or, more likely, your server’s public IP address:
+
+			Country Name (2 letter code) [AU]:FI
+			State or Province Name (full name) [Some-State]: Helsinki
+			Locality Name (eg, city) []: Helsinki
+			Organization Name (eg, company) [Internet Widgits Pty Ltd]: Hive
+			Organizational Unit Name (eg, section) []: Hive
+			Common Name (e.g. server FQDN or YOUR name) []: 10.12.166.177
+			Email Address []:gmolin@hive.student.fi
+
+		3) sudo nano /etc/apache2/conf-available/ssl-params.conf
+
+			SSLCipherSuite EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH
+			SSLProtocol All -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
+			SSLHonorCipherOrder On
+			# Disable preloading HSTS for now.  You can use the commented out header line that includes
+			# the "preload" directive if you understand the implications.
+			# Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+			Header always set X-Frame-Options DENY
+			Header always set X-Content-Type-Options nosniff
+			# Requires Apache >= 2.4
+			SSLCompression off
+			SSLUseStapling on
+			SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
+			# Requires Apache >= 2.4.11
+			SSLSessionTickets Off
+		
+		4) sudo cp /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf.bak
+
+		5) sudo nano /etc/apache2/sites-available/default-ssl.conf
+			<IfModule mod_ssl.c>
+				<VirtualHost _default_:443>
+						ServerAdmin gmolin@student.hive.fi
+						ServerName 10.12.166.177
+
+						DocumentRoot /var/www/html
+
+						ErrorLog ${APACHE_LOG_DIR}/error.log
+						CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+						SSLEngine on
+
+						SSLCertificateFile	/etc/ssl/certs/apache-selfsigned.crt
+						SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key
+
+						<FilesMatch "\.(cgi|shtml|phtml|php)$">
+										SSLOptions +StdEnvVars
+						</FilesMatch>
+						<Directory /usr/lib/cgi-bin>
+										SSLOptions +StdEnvVars
+						</Directory>
+
+				</VirtualHost>
+			</IfModule>
+		
+		6) sudo nano /etc/apache2/sites-available/000-default.conf
+
+			<VirtualHost *:80>
+				. . .
+
+				Redirect "/" "https://10.12.166.177/"
+
+				. . .
+			</VirtualHost>
+
+		7)  sudo a2enmod ssl
+			sudo a2enmod headers
+			sudo a2ensite default-ssl
+			sudo a2enconf ssl-params
+			sudo apache2ctl configtest
+			sudo systemctl restart apache2
