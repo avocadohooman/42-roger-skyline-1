@@ -83,6 +83,10 @@ cp -r assets/scripts/ ~/
 
 { crontab -l -u gmolin; echo '0 0 * * * SUN ~/scripts/monitor.sh'; } | crontab -u gmolin -
 
+{ crontab -e; echo '0 4 * * SUN sudo ~/scripts/update.sh'; } | crontab -e -
+{ crontab -e; echo '@reboot sudo ~/scripts/update.sh'; } | crontab -e -
+
+{ crontab -e; echo '0 0 * * * SUN ~/scripts/monitor.sh'; } | crontab -e -
 #Install Apache
 
 sudo apt install apache2 -y
