@@ -15,14 +15,9 @@ sudo adduser --disabled-password --gecos "" gmolin
 echo "gmolin:test1234" | chpasswd
 sudo adduser gmolin sudo
 sudo usermod -aG sudo gmolin
-#rm -rf /etc/sudoers 
-#cp assets/user/sudoers /etc/
 
 #Remvoe DHCP and create static IP
 
-#####sudo rm /etc/network/interfaces
-#mv /etc/network/interfaces /etc/network/interfaces.backup
-#rm -rf /etc/network/interfaces
 cp assets/staticip/interfaces /etc/network/interfaces
 
 #Install SSH and configure it properly with fixed port
@@ -31,8 +26,6 @@ apt -y install openssh-server
 
 rm -rf /etc/ssh/sshd_config
 cp assets/sshd/sshd_config /etc/ssh/
-
-#yes "y" | ssh-keygen -q -N "" > /dev/null
 
 sudo mkdir /home/gmolin/.ssh/
 sudo mkdir /home/gmolin/.ssh/
@@ -47,7 +40,6 @@ sudo ifup enp0s3
 #Install and configure Fail2Ban
 yes "y" | sudo apt -y install fail2ban
 
-#sudo rm -rf /etc/fail2ban/jail.local
 cp assets/fail2ban/jail.local /etc/fail2ban/jail.local
 
 cp assets/fail2ban/nginx-dos.conf /etc/fail2ban/filter.d
@@ -68,10 +60,6 @@ sudo apt-get -y install mailx
 sudo apt-get -y install mailutils
 
 cp -r assets/scripts/ ~/
-##{ crontab -e; echo '0 4 * * 7 sudo ~/update.sh'; } | crontab -e 
-##{ crontab -e; echo '@reboot sudo ~/update.sh'; } | crontab -e 
-
-##{ crontab -e; echo '@midnight sudo ~/monitor.sh'; } | crontab -e 
 
 { crontab -l -u root; echo '0 4 * * SUN sudo ~/scripts/update.sh'; } | crontab -u root -
 { crontab -l -u root; echo '@reboot sudo ~/scripts/update.sh'; } | crontab -u root -
@@ -87,6 +75,7 @@ cp -r assets/scripts/ ~/
 { crontab -e; echo '@reboot sudo ~/scripts/update.sh'; } | crontab -e -
 
 { crontab -e; echo '0 0 * * * SUN ~/scripts/monitor.sh'; } | crontab -e -
+
 #Install Apache
 
 sudo apt install apache2 -y
@@ -116,8 +105,6 @@ sudo ufw enable
 sudo ufw allow 50683/tcp
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
-#sudo ufw default deny incoming
-#sudo ufw default allow outgoing
 sudo ufw reload
 sudo ssh service sshd restart
 
