@@ -18,19 +18,19 @@ sudo usermod -aG sudo gmolin
 
 #Remvoe DHCP and create static IP
 
-cp assets/staticip/interfaces /etc/network/interfaces
+cp ~/roger/deploy_automation/assets/staticip/interfaces /etc/network/interfaces
 
 #Install SSH and configure it properly with fixed port
 
-apt -y install openssh-server
+apt-get -y install openssh-server
 
 rm -rf /etc/ssh/sshd_config
-cp assets/sshd/sshd_config /etc/ssh/
+cp ~/roger/deploy_automation/assets/sshd/sshd_config /etc/ssh/
 
 sudo mkdir /home/gmolin/.ssh/
 sudo mkdir /home/gmolin/.ssh/
 sudo mkdir /home/gmolin/.ssh/
-cat assets/ssh/id_rsa.pub > /home/gmolin/.ssh/authorized_keys
+cat ~/roger/deploy_automation/assets/ssh/id_rsa.pub > /home/gmolin/.ssh/authorized_keys
 
 sudo service ssh restart
 sudo service sshd restart
@@ -38,12 +38,12 @@ sudo service networking restart
 sudo ifup enp0s3
 
 #Install and configure Fail2Ban
-yes "y" | sudo apt -y install fail2ban
+yes "y" | sudo apt-get -y install fail2ban
 
-cp assets/fail2ban/jail.local /etc/fail2ban/jail.local
+cp ~/roger/deploy_automation/assets/fail2ban/jail.local /etc/fail2ban/jail.local
 
-cp assets/fail2ban/nginx-dos.conf /etc/fail2ban/filter.d
-cp assets/fail2ban/portscan.conf /etc/fail2ban/filter.d
+cp ~/roger/deploy_automation/assets/fail2ban/nginx-dos.conf /etc/fail2ban/filter.d
+cp ~/roger/deploy_automation/assets/fail2ban/portscan.conf /etc/fail2ban/filter.d
 
 sudo service fail2ban restart
 
@@ -59,7 +59,7 @@ sudo systemctl disable syslog.service
 sudo apt-get -y install mailx
 sudo apt-get -y install mailutils
 
-cp -r assets/scripts/ ~/
+cp -r ~/roger/deploy_automation/assets/scripts/ ~/
 
 { crontab -l -u root; echo '0 4 * * SUN sudo ~/scripts/update.sh'; } | crontab -u root -
 { crontab -l -u root; echo '@reboot sudo ~/scripts/update.sh'; } | crontab -u root -
@@ -81,17 +81,17 @@ cp -r assets/scripts/ ~/
 sudo apt install apache2 -y
 sudo systemctl enable apache2
 yes "y" | rm -rf /var/www/html/
-cp -r assets/apache/ /var/www/html/
+cp -r ~/roger/deploy_automation/assets/apache/ /var/www/html/
 
 #Generate & Setup SSL
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj "/C=FI/ST=HEL/O=Hive/OU=Project-roger/CN=10.12.166.177" -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
 
-cp assets/ssl/ssl-params.conf /etc/apache2/conf-available/ssl-params.conf
+cp ~/roger/deploy_automation/assets/ssl/ssl-params.conf /etc/apache2/conf-available/ssl-params.conf
 sudo cp /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf.bak
 rm /etc/apache2/sites-available/default-ssl.conf
-cp assets/ssl/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
+cp ~/roger/deploy_automation/assets/ssl/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
 rm /etc/apache2/sites-available/000-default.conf
-cp assets/ssl/000-default.conf /etc/apache2/sites-available/000-default.conf
+cp ~/roger/deploy_automation/assets/ssl/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 sudo a2enmod ssl
 sudo a2enmod headers
@@ -111,4 +111,3 @@ sudo ssh service sshd restart
 #Reboot Apache server, hopefully we have a live website
 systemctl reload apache2
 sudo fail2ban-client status
-
